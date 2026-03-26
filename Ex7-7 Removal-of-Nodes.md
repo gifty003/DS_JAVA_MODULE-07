@@ -1,100 +1,54 @@
-# Ex6 Right Rotation LinkedList
+# Ex7 Removal of Nodes with a Specific Value from a Linked List
+
 ## DATE:
+
 ## AIM:
-To write a Java  program to:
-Create a singly linked list.
-Rotate the linked list to the right by k positions.
-Display the rotated linked list.
+To write a Java program that removes all nodes from a linked list whose value matches a given integer (val) and returns the new head of the modified linked list.
+
 ## Algorithm
-1. Start the program.
-2. Define a Node class consisting of data and a reference next.
-3. Create a LinkedList class with methods to:
-4. Insert nodes at the end.
-5. Rotate the list to the right by k positions.
-6. Display the list.
-7. Read the number of nodes and insert them into the linked list.
-8. Read the value of k (number of rotations).
-To rotate:
+1. Start the program.  
+2. Define a `Node` class containing `data` and `next`.  
+3. Create a linked list by inserting elements.  
+4. Traverse the list and remove nodes whose data equals the specified value.  
+5. Adjust pointers to skip deleted nodes and maintain the linked list.  
+6. Display the modified linked list.  
+7. Stop the program.  
 
-Count the total number of nodes (len).
-
-Make the list circular by connecting the last node to the head.
-
-Compute k = k % len to avoid unnecessary rotations.
-
-Traverse to the (len - k - 1)th node and set the new head.
-
-Break the circular connection.
-
-9. Display the rotated list.
-10. Stop the program.
-  
 ## Program:
-```
+```java
 /*
-Program to  Right Rotation LinkedList
+program that removes all nodes from a linked list whose value matches a given integer (val) and returns the new head of the modified linked list.
 Developed by: GIFTSON RAJARATHINAM N
-RegisterNumber: 212222233002
+RegisterNumber:  212222233002
 */
 import java.util.Scanner;
 
 class Node {
     int data;
     Node next;
-
     Node(int data) {
         this.data = data;
         this.next = null;
     }
 }
 
-class LinkedList {
-    Node head;
-
-    // Insert node at end
-    public void insert(int data) {
-        Node newNode = new Node(data);
-
-        if (head == null) {
-            head = newNode;
-        } else {
-            Node temp = head;
-            while (temp.next != null)
-                temp = temp.next;
-            temp.next = newNode;
+public class RemoveValueLinkedList {
+    static Node removeElements(Node head, int val) {
+        while (head != null && head.data == val) {
+            head = head.next;
         }
+        Node current = head;
+        while (current != null && current.next != null) {
+            if (current.next.data == val) {
+                current.next = current.next.next;
+            } else {
+                current = current.next;
+            }
+        }
+        return head;
     }
 
-    // Right rotate linked list by k positions
-    public void rightRotate(int k) {
-        if (head == null || k == 0)
-            return;
-
-        Node temp = head;
-        int len = 1;
-
-        while (temp.next != null) {
-            temp = temp.next;
-            len++;
-        }
-
-        // Make circular
-        temp.next = head;
-
-        k = k % len;  // Effective rotation
-        int stepsToNewHead = len - k;
-
-        Node newTail = temp;
-        while (stepsToNewHead-- > 0) {
-            newTail = newTail.next;
-        }
-
-        head = newTail.next;
-        newTail.next = null;
-    }
-
-    // Display list
-    public void display() {
+    static void display(Node head) {
         Node temp = head;
         while (temp != null) {
             System.out.print(temp.data + " ");
@@ -102,38 +56,34 @@ class LinkedList {
         }
         System.out.println();
     }
-}
 
-public class RightRotationLinkedList {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-        LinkedList list = new LinkedList();
-
-        System.out.print("Enter number of nodes: ");
+        Node head = null, tail = null;
+        System.out.print("Enter number of elements: ");
         int n = sc.nextInt();
-
-        System.out.println("Enter " + n + " elements:");
+        System.out.println("Enter elements:");
         for (int i = 0; i < n; i++) {
-            list.insert(sc.nextInt());
+            int val = sc.nextInt();
+            Node newNode = new Node(val);
+            if (head == null) {
+                head = tail = newNode;
+            } else {
+                tail.next = newNode;
+                tail = newNode;
+            }
         }
-
-        System.out.print("Enter k (positions to rotate): ");
-        int k = sc.nextInt();
-
-        list.rightRotate(k);
-
-        System.out.println("Rotated Linked List:");
-        list.display();
-
+        System.out.print("Enter value to remove: ");
+        int value = sc.nextInt();
+        head = removeElements(head, value);
+        System.out.println("Linked list after removal:");
+        display(head);
         sc.close();
     }
 }
 ```
+## OUTPUT
+<img width="943" height="209" alt="image" src="https://github.com/user-attachments/assets/a053d010-8c86-4f35-80da-051e624e5273" />
 
-## Output:
-
-<img width="571" height="232" alt="image" src="https://github.com/user-attachments/assets/8072a993-dd5b-4420-ab99-e785cae1316a" />
-
-
-## Result:
-Thus, the java program to perfom right rotation on linked list is implemented successfully.
+## RESULT
+Thus, The Java program successfully removes all nodes with the specified value (val) from the linked list and returns the new head.
